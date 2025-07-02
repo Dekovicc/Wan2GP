@@ -2279,10 +2279,9 @@ def setup_loras(model_type, transformer,  lora_dir, lora_preselected_preset, spl
     from pathlib import Path
 
     lora_dir = get_lora_dir(model_type)
-    if lora_dir != None :
-        if not os.path.isdir(lora_dir):
-            raise Exception("--lora-dir should be a path to a directory that contains Loras")
-
+    if lora_dir is None or not os.path.isdir(lora_dir):
+        # Gracefully skip LoRA loading if directory is missing
+        return [], [], [], [], "", "", ""
 
     if lora_dir != None:
         dir_loras =  glob.glob( os.path.join(lora_dir , "*.sft") ) + glob.glob( os.path.join(lora_dir , "*.safetensors") ) 
